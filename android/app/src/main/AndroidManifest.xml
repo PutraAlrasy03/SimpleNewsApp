@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.news_api_mine">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="news_api_mine"
+        android:label="Daily News"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

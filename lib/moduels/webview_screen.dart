@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatelessWidget {
@@ -10,7 +11,14 @@ class WebViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+            Share.share('$url', subject: 'Artical URl');
+          }, icon: Icon(Icons.share),iconSize: 18,),
+        ],
+      ),
       body: WebView(
         initialUrl: url,
       ),

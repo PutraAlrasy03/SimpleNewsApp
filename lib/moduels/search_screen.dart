@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_api_mine/constants/components.dart';
 import 'package:news_api_mine/layout/cubit/cubit.dart';
 import 'package:news_api_mine/layout/cubit/states.dart';
+import 'package:share/share.dart';
 
 class SearchScreen extends StatelessWidget {
    SearchScreen({Key? key}) : super(key: key);
@@ -18,30 +19,31 @@ class SearchScreen extends StatelessWidget {
             var cubit = NewsCubit.get(context);
             var list = cubit.search;
             return Scaffold(
-              appBar: AppBar(),
+              appBar: AppBar(
+                title: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: formField(
+                    controller: searchController,
+                    onChanged: (value) {
+                      cubit.getSearch(value);
+                    },
+                    onFieldSubmitted: (value) {
+                      cubit.getSearch(value);
+                    },
+                    hint: 'Search For Articals',
+                    type: TextInputType.text,
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Search Address can not be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
               body: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: formField(
-                      controller: searchController,
-                      onChanged: (value) {
-                        print(value);
-                      },
-                      onFieldSubmitted: (value) {
-                        cubit.getSearch(value);
-                      },
-                      label: 'Search',
-                      type: TextInputType.text,
-                      prefixIcon: Icon(Icons.search),
-                      validate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Search Address can not be empty';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
+
                   Expanded(
                       child: ListView.separated(
                           physics: BouncingScrollPhysics(),

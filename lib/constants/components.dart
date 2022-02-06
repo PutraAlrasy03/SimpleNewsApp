@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_api_mine/layout/cubit/cubit.dart';
 import 'package:news_api_mine/layout/cubit/states.dart';
 import 'package:news_api_mine/moduels/webview_screen.dart';
+import 'package:share/share.dart';
 
 
 Widget buildNewsItem(artical) {
@@ -50,14 +51,29 @@ Widget buildNewsItem(artical) {
                               ), maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 15,),
-                            Text('${artical['publishedAt']}',
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey
-                              ), maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            const SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('${artical['publishedAt']}',
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey
+                                  ), maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Container(
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.grey[300],
+                                    foregroundColor: Colors.grey,
+                                    radius: 18,
+                                    child: IconButton(onPressed: () {
+                                      Share.share(artical['url'], subject: 'Artical URl');
+                                    }, icon: Icon(Icons.share),iconSize: 18,),
+                                  ),
+                                )
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -97,18 +113,19 @@ Widget buildArticalSearch(artical, context) {
           SizedBox(width: 20,),
           Expanded(
             child: Container(
-              height: 120,
+              height: 100,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Text('${artical['title']}',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: TextStyle(
+                        fontSize: 16
+                      ),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
-
                   ),
                   Text('${artical['publishedAt']}',
                     style: TextStyle(
@@ -133,8 +150,9 @@ Widget formField({
   final Function(String)? onFieldSubmitted,
   final Function()? onTap,
   required FormFieldValidator validate,
-  required String label,
-  required Icon prefixIcon,
+  String? label,
+  String? hint,
+  Icon? prefixIcon,
   IconButton? suffixIcon,
   bool isPassword = false,
   bool isClickable = true,
@@ -148,14 +166,14 @@ Widget formField({
   enabled: isClickable,
   onFieldSubmitted: onFieldSubmitted,
   obscureText: isPassword ,
-
   decoration: InputDecoration(
+    hintText: hint,
     fillColor: Colors.white,
     focusColor: Colors.white,
     labelText: label,
     prefixIcon: prefixIcon,
     suffixIcon: suffixIcon,
-    border: const OutlineInputBorder(),
+    border: InputBorder.none,
   ),
 );
 
